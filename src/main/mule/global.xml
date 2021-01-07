@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="40757d4a-42af-474a-aa48-1a2bb829ebb5" basePath="${base.path}">
+		<http:listener-connection host="0.0.0.0" port="8082" />
+	</http:listener-config>
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ba2e63a5-e196-481c-ad00-7faf24289d2d" flowRef="orders-apiFlow" />
+	<configuration doc:name="Configuration" doc:id="257c2a15-3ede-4230-8c3c-dfa2610b9c34" defaultErrorHandler-ref="error-handlerError_Handler" />
+	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="4b45038e-fe09-49dd-b52c-5c649c6a79a9" name="orders-api-router" api="api\orders-api.raml"/>
+	<configuration-properties doc:name="Configuration properties" doc:id="4771049b-3006-43a1-875d-66445240301b" file="configs\api.properties" />
+	<configuration-properties doc:name="Configuration properties" doc:id="fc9d90a4-1403-4174-b09b-f79fbf63566d" file="configs\api-${env}.properties" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="263a018c-2655-4d6a-9988-787d09242025" file="configs\api-${env}.properties" key="${keysxFqtVrL}" />
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="86962cb6-0d62-4540-96c9-f7652937fcf2" >
+		<db:mssql-connection host="${database.host}" user="${database.username}" password="${secure::database.password}" databaseName="${database.name}" />
+	</db:config>
+	
+</mule>

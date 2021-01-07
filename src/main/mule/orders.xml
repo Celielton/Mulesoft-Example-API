@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="get-orders-flow" doc:id="84abce3f-44e1-4917-94f7-e6d9db866788" >
+		<db:select doc:name="Select" doc:id="9b597b4c-db7d-469b-9bc3-b4f1d99e8033" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT orders.OrderId, orders.PlacementDate, orders.CustomerName, items.ItemId, items.ItemName, items.ItemCost, ordItems.ItemCount FROM [dbo].[Orders] orders
+    JOIN [dbo].[OrderItems] ordItems on ordItems.OrderId = orders.orderId
+    JOIN [dbo].[Items] items on items.ItemId = ordItems.ItemId
+Where orders.OrderId = :id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{'id': vars.orderId}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="43755e6e-03af-4e55-b9ab-e9468933b33b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload groupBy ((item, index) -> item.OrderId) mapObject ((value, key, index) -> {
+    id: key as Number,
+    placementDate: value[0].PlacementDate,
+    customerName: value[0].CustomerName,
+    totalCost: sum(value map $.ItemCost * $.ItemCount),
+    items: value map  { 
+        id: $.ItemId,
+        name: $.ItemName,
+        cost: $.ItemCost,
+        quantity: $.ItemCount
+    }
+})]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

@@ -1,0 +1,35 @@
+#%RAML 1.0
+version: 1
+title: Orders-API
+baseUri: /orders-api/v1
+
+types:
+  orderType: !include types/order.raml
+
+/orders/{orderId}:
+    description: Retrieve an order by its identifier
+    uriParameters:
+      orderId:
+        description: Order identifier
+        type: integer
+        required: true
+        example:
+          1
+    get:
+      responses:
+        "200":
+          body:
+            application/json:
+              type: orderType
+              examples: !include examples/order.raml
+/healthz:
+  description: API health check
+  get:
+    responses:
+      "200":
+        body:
+          application/json:
+            example:
+              healthy
+          
+          

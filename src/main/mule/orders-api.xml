@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="orders-apiFlow" doc:id="1d3c3d87-2ed2-4108-a78a-57e24e90531a" >
+		<http:listener doc:name="Listener" doc:id="46fc2839-614e-4236-9d4a-707c84b446e6" config-ref="HTTP_Listener_config" path="/api/*"/>
+		<apikit:router doc:name="APIkit Router" doc:id="1b76b61e-cd8e-488e-8d2f-3eb7c297ccb5" config-ref="orders-api-router"/>
+	</flow>
+	<flow name="orders-api-console-flow" doc:id="cfbe5af6-e88d-4309-920b-6ff601a38b19" >
+		<http:listener doc:name="Listener" doc:id="4424b021-d453-48a2-91ea-95b63bb506a2" config-ref="HTTP_Listener_config" path="/console/*"/>
+		<apikit:console doc:name="APIkit Console" doc:id="56511920-fe99-4221-bfda-d3685e71181c" config-ref="orders-api-router"/>
+	</flow>
+	<flow name="get:\orders\(orderId):orders-api-router" doc:id="ae3e206f-f510-4a56-83a9-27281126fb0a" >
+		<ee:transform doc:name="Transform Message" doc:id="6cf74650-9fdb-45ff-8091-1b6421f31607" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="orderId" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.uriParams.'orderId']]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="get-orders-flow" doc:id="b4d5d764-506d-4536-860f-ea34b0a925e8" name="get-orders-flow"/>
+	</flow>
+</mule>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="healthzFlow" doc:id="26fcba0f-5270-44a5-a2d2-f0641be49c02" >
+		<http:listener doc:name="Listener" doc:id="33483b56-588f-4196-b092-b055d1dca263" config-ref="HTTP_Listener_config" path="${base.path}/healthz"/>
+		<set-payload value="Healthy" doc:name="Set Payload" doc:id="e28cebf7-e37f-46a7-87b9-9ad4379a53fe" />
+	</flow>
+</mule>
