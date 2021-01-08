@@ -13,7 +13,7 @@ http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/cu
 	</http:listener-config>
 	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ba2e63a5-e196-481c-ad00-7faf24289d2d" flowRef="orders-apiFlow" />
 	<configuration doc:name="Configuration" doc:id="257c2a15-3ede-4230-8c3c-dfa2610b9c34" defaultErrorHandler-ref="error-handlerError_Handler" />
-	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="4b45038e-fe09-49dd-b52c-5c649c6a79a9" name="orders-api-router" api="api\orders-api.raml"/>
+	<apikit:config outboundHeadersMapName="outboundHeadersMapName" httpStatusVarName="httpStatus" doc:name="Router" doc:id="4b45038e-fe09-49dd-b52c-5c649c6a79a9" name="orders-api-router" api="api/orders-api.raml"/>
 	<configuration-properties doc:name="Configuration properties" doc:id="4771049b-3006-43a1-875d-66445240301b" file="configs\api.properties" />
 	<configuration-properties doc:name="Configuration properties" doc:id="fc9d90a4-1403-4174-b09b-f79fbf63566d" file="configs\api-${env}.properties" />
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="263a018c-2655-4d6a-9988-787d09242025" file="configs\api-${env}.properties" key="${keysxFqtVrL}" />
