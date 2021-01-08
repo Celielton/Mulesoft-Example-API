@@ -22,14 +22,5 @@ types:
             application/json:
               type: orderType
               examples: !include examples/order.raml
-/healthz:
-  description: API health check
-  get:
-    responses:
-      "200":
-        body:
-          application/json:
-            example:
-              healthy
           
           

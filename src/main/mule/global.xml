@@ -9,7 +9,7 @@ http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/m
 http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="40757d4a-42af-474a-aa48-1a2bb829ebb5" basePath="${base.path}">
-		<http:listener-connection host="0.0.0.0" port="8082" />
+		<http:listener-connection host="0.0.0.0" port="${http.port}"/>
 	</http:listener-config>
 	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="ba2e63a5-e196-481c-ad00-7faf24289d2d" flowRef="orders-apiFlow" />
 	<configuration doc:name="Configuration" doc:id="257c2a15-3ede-4230-8c3c-dfa2610b9c34" defaultErrorHandler-ref="error-handlerError_Handler" />
